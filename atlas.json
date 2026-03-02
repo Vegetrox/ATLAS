@@ -1,0 +1,205 @@
+{
+  "lieux": [
+    {
+      "nom": "Remorque frigorifique",
+      "tag": "Industriel",
+      "desc": "Une remorque de camion frigorifique scellée de l'extérieur. Le froid descend progressivement. Les parois en métal réfléchissent vos souffles condensés.",
+      "contexte": "Vous avez été enfermés après une livraison qui a mal tourné.",
+      "declencheur": "La porte se verrouille automatiquement. Température : −2°C et en baisse.",
+      "complications": ["Une fuite de gaz envahit l'espace","Le système de réfrigération s'emballe","Un des joueurs est blessé","Les provisions présentes sont empoisonnées","La remorque se met en mouvement"]
+    },
+    {
+      "nom": "Chalet sous tempête",
+      "tag": "Isolé",
+      "desc": "Un chalet de montagne isolé. La tempête coupe toute communication. Les fenêtres tremblent.",
+      "contexte": "Une randonnée banale devenue catastrophe météorologique.",
+      "declencheur": "Le pont derrière vous s'est effondré. Il n'y a aucun retour possible.",
+      "complications": ["Quelqu'un parmi vous n'est pas celui qu'il prétend être","Les réserves sont sabotées","Un inconnu frappe à la porte","Le générateur tombe en panne","Des traces inhabituelles entourent le chalet"]
+    },
+    {
+      "nom": "Station orbitale",
+      "tag": "Sci-Fi",
+      "desc": "Module orbital de recherche. Silence absolu hormis le bourdonnement des systèmes. Oxygène pour 3 heures.",
+      "contexte": "Une anomalie a déclenché les protocoles d'urgence.",
+      "declencheur": "Les sas se verrouillent. L'IA centrale indique un danger niveau 5.",
+      "complications": ["Une fuite dans la coque","L'IA est compromise","Un membre est en état de choc","Les combinaisons sont endommagées","Une entité inconnue est détectée à bord"]
+    },
+    {
+      "nom": "Théâtre verrouillé",
+      "tag": "Mystique",
+      "desc": "Un vieux théâtre baroque fermé depuis 30 ans. Toiles sur les sièges. Lumières vacillantes.",
+      "contexte": "Une visite privée organisée en secret.",
+      "declencheur": "Le propriétaire disparaît. Les portes sont toutes verrouillées de l'intérieur.",
+      "complications": ["Des messages apparaissent sur scène","Une des personnes semble possédée","Le décor s'effondre","Des passages secrets s'ouvrent","La salle prend feu"]
+    },
+    {
+      "nom": "Sous-marin de recherche",
+      "tag": "Industriel",
+      "desc": "Petit sous-marin à 200 mètres de fond. Pression maximale. Communications coupées.",
+      "contexte": "Expédition scientifique transformée en cauchemar.",
+      "declencheur": "Collision avec une structure inconnue. Deux compartiments inondés.",
+      "complications": ["L'eau monte dans le couloir principal","Un réacteur instable","Un membre perd connaissance","Des sons métalliques viennent de la coque","Le capitaine a un secret compromettant"]
+    },
+    {
+      "nom": "Crypte ancienne",
+      "tag": "Mystique",
+      "desc": "Crypte médiévale sous une église. Odeur de pierre humide. Torches qui s'éteignent une à une.",
+      "contexte": "Exploration archéologique non autorisée.",
+      "declencheur": "L'entrée s'effondre. Vous êtes enfermés avec quelque chose.",
+      "complications": ["Un membre est maudit","Des énigmes anciennes bloquent les portes","L'air se raréfie","Des reliques réagissent","Une présence vous suit dans l'obscurité"]
+    },
+    {
+      "nom": "Laboratoire en quarantaine",
+      "tag": "Sci-Fi",
+      "desc": "Laboratoire de recherche biologique scellé par protocole d'urgence.",
+      "contexte": "Un échantillon a été mal stocké. L'alarme s'est déclenchée.",
+      "declencheur": "Quarantaine niveau 4. Personne n'entre ni ne sort avant décontamination.",
+      "complications": ["Un membre a été exposé","Les échantillons ont disparu","Quelqu'un a sciemment déclenché l'alarme","Le système de décontamination est cassé","Une créature a été libérée"]
+    },
+    {
+      "nom": "Wagon scellé",
+      "tag": "Thriller",
+      "desc": "Un wagon de train de nuit. Arrêt inexpliqué en pleine campagne. Fenêtres verrouillées.",
+      "contexte": "Voyage de nuit banal transformé en mystère.",
+      "declencheur": "Le train s'arrête brusquement. Tous les autres voyageurs ont disparu.",
+      "complications": ["Un mort est découvert dans les toilettes","Le conducteur est introuvable","Quelqu'un essaie d'entrer par le toit","Les billets révèlent une anomalie","Un passager caché se révèle"]
+    }
+  ],
+
+  "problemes": [
+    { "nom": "Bombe à retardement", "tag": "Urgence", "desc": "Un engin explosif est dissimulé quelque part. Le détonateur égrène les secondes." },
+    { "nom": "Empoisonnement collectif", "tag": "Médical", "desc": "Un toxique a été introduit dans la nourriture ou l'air. Les symptômes commencent à apparaître." },
+    { "nom": "Créature cachée", "tag": "Horreur", "desc": "Une présence hostile occupe le lieu. Elle chasse. Elle est intelligente." },
+    { "nom": "Traître parmi vous", "tag": "Psychologique", "desc": "L'un d'entre vous sabote le groupe. Personne ne sait qui." },
+    { "nom": "Système verrouillé", "tag": "Technique", "desc": "Un système informatique contrôle tout. Trouver le code avant l'effondrement." },
+    { "nom": "Infection propagée", "tag": "Médical", "desc": "Un pathogène se répand. Chaque heure augmente le risque de contamination irréversible." },
+    { "nom": "Disparition mystérieuse", "tag": "Enquête", "desc": "Un membre crucial a disparu. Sa localisation est vitale pour tous." },
+    { "nom": "Faille structurelle", "tag": "Urgence", "desc": "La structure tient encore — mais pour combien de temps. Chaque mouvement brusque aggrave la situation." }
+  ],
+
+  "personnages": [
+    {
+      "prenom": "Mara", "age": 34, "profession": "Médecin urgentiste",
+      "archetype": "Mental", "icon": "🩺",
+      "competences": ["Premiers secours", "Sang-froid", "Analyse rapide"],
+      "faiblesse": "Claustrophobie sévère",
+      "motivation": "Protéger les autres à tout prix",
+      "enjeu": "Son fils est à l'extérieur et ne sait pas où elle est.",
+      "secret": "Elle a caché un médicament expérimental dans sa trousse."
+    },
+    {
+      "prenom": "Karim", "age": 28, "profession": "Ingénieur électricien",
+      "archetype": "Technique", "icon": "⚡",
+      "competences": ["Électricité", "Mécanique", "Improvisation"],
+      "faiblesse": "Impulsivité dangereuse",
+      "motivation": "Prouver sa valeur au groupe",
+      "enjeu": "Il est l'auteur involontaire de la situation actuelle.",
+      "secret": "Il sait comment sortir mais cela coûterait une vie."
+    },
+    {
+      "prenom": "Yuki", "age": 41, "profession": "Diplomate",
+      "archetype": "Social", "icon": "🤝",
+      "competences": ["Négociation", "Psychologie", "Persuasion"],
+      "faiblesse": "Manque total de force physique",
+      "motivation": "Rentrer pour signer un accord capital",
+      "enjeu": "Elle porte des informations classifiées que quelqu'un veut récupérer.",
+      "secret": "Elle a déjà vécu cette situation — il y a 10 ans."
+    },
+    {
+      "prenom": "Bastian", "age": 26, "profession": "Militaire déserteur",
+      "archetype": "Physique", "icon": "⚔️",
+      "competences": ["Combat", "Survie", "Résistance"],
+      "faiblesse": "PTSD déclenché par les cris",
+      "motivation": "Expier une faute passée",
+      "enjeu": "Il est recherché par son ancien régiment.",
+      "secret": "Il a une arme dissimulée sur lui."
+    },
+    {
+      "prenom": "Solène", "age": 39, "profession": "Hackeuse reconvertie",
+      "archetype": "Technique", "icon": "💻",
+      "competences": ["Informatique", "Cryptographie", "Discrétion"],
+      "faiblesse": "Paranoïa chronique",
+      "motivation": "Effacer les traces d'une transaction illégale",
+      "enjeu": "Quelqu'un dans le groupe connaît son passé.",
+      "secret": "Elle a planté un virus dans le système du lieu."
+    },
+    {
+      "prenom": "Omar", "age": 52, "profession": "Archéologue",
+      "archetype": "Mental", "icon": "📜",
+      "competences": ["Histoire", "Langues mortes", "Patience"],
+      "faiblesse": "Problème cardiaque caché",
+      "motivation": "Trouver la preuve de sa théorie avant de mourir",
+      "enjeu": "Il a volé quelque chose qui appartient à ce lieu.",
+      "secret": "Il connaît une issue secrète que personne d'autre ne connaît."
+    },
+    {
+      "prenom": "Inès", "age": 31, "profession": "Journaliste d'investigation",
+      "archetype": "Social", "icon": "📷",
+      "competences": ["Observation", "Manipulation", "Networking"],
+      "faiblesse": "Addiction à l'adrénaline",
+      "motivation": "Obtenir le scoop de sa vie",
+      "enjeu": "Elle enregistre tout sans le dire au groupe.",
+      "secret": "Elle est ici sur commande d'une tierce personne."
+    },
+    {
+      "prenom": "Théo", "age": 23, "profession": "Étudiant en chimie",
+      "archetype": "Technique", "icon": "⚗️",
+      "competences": ["Chimie", "Pharmacologie", "Bricolage"],
+      "faiblesse": "Trop confiant dans ses théories",
+      "motivation": "Survivre à n'importe quel prix",
+      "enjeu": "Il a accidentellement déclenché le problème.",
+      "secret": "Il a une allergie mortelle à un élément présent dans le lieu."
+    }
+  ],
+
+  "objets": [
+    { "icon": "🔦", "nom": "Lampe torche", "use": "Éclaire les zones sombres. Peut servir de signal ou d'arme improvisée.", "type": "survie" },
+    { "icon": "🔑", "nom": "Trousseau de clés", "use": "Sept clés non identifiées. L'une d'elles ouvre quelque chose de crucial.", "type": "cle" },
+    { "icon": "💊", "nom": "Trousse médicale", "use": "Pansements, morphine, adrénaline. Soigne une blessure grave une seule fois.", "type": "medical" },
+    { "icon": "📻", "nom": "Radio cassée", "use": "Fréquence partielle. Avec les bons réglages, pourrait capter un signal extérieur.", "type": "communication" },
+    { "icon": "🗺️", "nom": "Plan du lieu", "use": "Plans partiels — certaines pièces absentes. Quelque chose est entouré en rouge.", "type": "info" },
+    { "icon": "⚙️", "nom": "Boîte à outils", "use": "Tournevis, pince, marteau. Peut démonter ou forcer les mécanismes simples.", "type": "outil" },
+    { "icon": "📓", "nom": "Carnet chiffré", "use": "Journal d'une personne disparue. Déchiffré, révèle un secret capital.", "type": "info" },
+    { "icon": "🧪", "nom": "Fiole inconnue", "use": "Liquide non identifié. Peut être un antidote — ou un poison.", "type": "chimie" },
+    { "icon": "🔋", "nom": "Batterie de secours", "use": "Alimente temporairement n'importe quel appareil électronique.", "type": "technique" },
+    { "icon": "📡", "nom": "Émetteur satellite", "use": "Envoie un signal de détresse. Prend 20 minutes pour être traité.", "type": "communication" },
+    { "icon": "🪓", "nom": "Hache de secours", "use": "Force une porte ou coupe un câble. Usage unique seulement.", "type": "physique" },
+    { "icon": "💡", "nom": "Générateur de poche", "use": "Rétablit l'électricité dans une zone pour 10 minutes.", "type": "technique" }
+  ],
+
+  "evenements": [
+    { "nom": "L'obscurité tombe", "desc": "Toutes les lumières s'éteignent simultanément. Quelqu'un a 30 secondes pour réagir.", "type": "crisis", "acte": 1, "time": "T+10 min" },
+    { "nom": "Révélation partielle", "desc": "Un indice majeur est découvert — mais il soulève autant de questions.", "type": "info", "acte": 1, "time": "T+15 min" },
+    { "nom": "Première confrontation", "desc": "La menace se manifeste pour la première fois clairement. Impossible d'ignorer.", "type": "crisis", "acte": 2, "time": "T+20 min" },
+    { "nom": "Objet clé trouvé", "desc": "Un objet indispensable est localisé — mais son utilisation n'est pas évidente.", "type": "object", "acte": 2, "time": "T+25 min" },
+    { "nom": "Trahison révélée", "desc": "Un personnage doit avouer quelque chose. La dynamique de groupe change.", "type": "crisis", "acte": 2, "time": "T+30 min" },
+    { "nom": "Point de non-retour", "desc": "Une action irréversible est commise. Il n'y a plus de marche arrière.", "type": "crisis", "acte": 3, "time": "T+40 min" },
+    { "nom": "Escalade critique", "desc": "La situation empire brutalement. Le groupe a 10 minutes pour trouver une solution.", "type": "crisis", "acte": 3, "time": "T+45 min" },
+    { "nom": "Révélation finale", "desc": "La vérité complète sur la situation est mise à jour. Tout change.", "type": "info", "acte": 4, "time": "T+50 min" },
+    { "nom": "Le climax", "desc": "Tout converge. La décision finale doit être prise maintenant.", "type": "crisis", "acte": 4, "time": "T+55 min" }
+  ],
+
+  "hints": {
+    "light": [
+      "Regardez ce qui semble hors de place dans l'environnement immédiat.",
+      "Chaque personnage a une compétence unique — avez-vous tous contribué ?",
+      "Les objets ont tous une utilité. Aucun n'est là par hasard.",
+      "Relisez le contexte initial. La réponse est souvent dans l'énoncé."
+    ],
+    "strong": [
+      "L'objet clé et la compétence du bon personnage sont la combinaison à trouver.",
+      "Le secret d'un des personnages est directement lié à la solution.",
+      "Il y a deux chemins vers la victoire. Vous n'en avez essayé qu'un.",
+      "Concentrez-vous sur le problème central — pas ses symptômes."
+    ],
+    "critical": [
+      "La solution combine deux objets spécifiques et la compétence Technique.",
+      "Le traître doit être confronté maintenant pour débloquer la suite.",
+      "Utilisez l'émetteur satellite ET le plan du lieu ensemble.",
+      "La condition de victoire principale est accessible dès maintenant — sans tout résoudre."
+    ]
+  },
+
+  "act_names": ["INTRODUCTION", "MONTÉE EN TENSION", "CRISE", "CLIMAX", "RÉSOLUTION"],
+  "tension_labels": ["CALME", "TENDU", "OPPRESSANT", "CRITIQUE", "DÉSESPÉRÉ"]
+}

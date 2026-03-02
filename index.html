@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATLAS — Générateur de Huis Clos</title>
+  <link rel="stylesheet" href="css/global.css">
+  <style>
+    /* ── HOME SPECIFIC ── */
+    .page { display: none; min-height: 100vh; }
+    .page.active { display: flex; flex-direction: column; }
+
+    /* Hero section */
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      text-align: center;
+    }
+
+    /* SVG logo area */
+    .logo-emblem {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 24px;
+      position: relative;
+    }
+
+    /* Config card */
+    .config-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 36px;
+      max-width: 700px;
+      width: 100%;
+      margin: 48px auto 0;
+    }
+
+    .config-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 560px) { .config-grid { grid-template-columns: 1fr; } }
+
+    .config-full { grid-column: 1 / -1; }
+
+    .field-group { display: flex; flex-direction: column; gap: 10px; }
+
+    /* Corner ornaments */
+    .config-card-corner {
+      position: absolute;
+      width: 20px; height: 20px;
+      border-color: var(--gold);
+      border-style: solid;
+      opacity: 0.3;
+    }
+    .corner-tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .corner-tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+    .corner-bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+    .corner-br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+    .config-card { position: relative; }
+
+    .card-separator {
+      height: 1px;
+      background: var(--border);
+      margin: 0 -36px 28px;
+    }
+
+    /* ══ LOGO SCENE ══ */
+    .atlas-logo-scene {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 20px;
+      overflow: visible;
+    }
+
+    /* Rose des vents derrière les lettres */
+    .logo-compass {
+      position: absolute;
+      width: 480px; height: 480px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -52%);
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Lueur sol */
+    .logo-ground-glow {
+      position: absolute;
+      bottom: 12px; left: 50%;
+      transform: translateX(-50%);
+      width: 320px; height: 36px;
+      background: radial-gradient(ellipse, rgba(255,160,20,0.45) 0%, transparent 70%);
+      filter: blur(10px);
+      pointer-events: none;
+      animation: glowPulse 3s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    /* Particules */
+    .logo-particles {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .lp {
+      position: absolute;
+      border-radius: 50%;
+      animation: lpFloat linear infinite;
+      opacity: 0;
+    }
+
+    /* Rangée de lettres */
+    .atlas-letters-row {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      line-height: 1;
+    }
+
+    /* Lettres ATLAS */
+    .atlas-letter {
+      font-family: 'Cinzel Decorative', serif;
+      font-weight: 700;
+      font-size: clamp(68px, 12vw, 120px);
+      line-height: 0.95;
+      color: transparent;
+      background: linear-gradient(175deg,
+        #fff8d0 0%,
+        #f5d060 12%,
+        #d4900a 38%,
+        #f0c040 54%,
+        #9a6010 74%,
+        #d4900a 88%,
+        #f5d060 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter:
+        drop-shadow(0 0 22px rgba(255,170,30,0.55))
+        drop-shadow(0 4px 8px rgba(0,0,0,0.95))
+        drop-shadow(0 -1px 0 rgba(255,240,160,0.25));
+      letter-spacing: 2px;
+    }
+
+    /* Sablier */
+    .atlas-hourglass {
+      width: clamp(48px, 7vw, 82px);
+      height: clamp(70px, 10.5vw, 122px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin: 0 clamp(2px, 0.8vw, 8px);
+      filter: drop-shadow(0 0 16px rgba(255,160,20,0.6));
+    }
+
+    /* Tagline */
+    .atlas-tagline-row {
+      position: relative;
+      z-index: 2;
+      margin-top: clamp(8px, 1.5vw, 18px);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .atlas-tagline-line {
+      height: 1px;
+      width: clamp(24px, 4vw, 60px);
+      background: linear-gradient(to right, transparent, rgba(200,150,40,0.4));
+    }
+    .atlas-tagline-line.right {
+      background: linear-gradient(to left, transparent, rgba(200,150,40,0.4));
+    }
+    .atlas-tagline-text {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: clamp(9px, 1.3vw, 14px);
+      letter-spacing: clamp(2px, 0.4vw, 5px);
+      color: #d4a030;
+      text-shadow: 0 0 14px rgba(255,180,40,0.4);
+      white-space: nowrap;
+      padding: 6px 16px;
+      border-top: 1px solid rgba(200,150,40,0.3);
+      border-bottom: 1px solid rgba(200,150,40,0.3);
+      position: relative;
+    }
+    .atlas-tagline-text::before,
+    .atlas-tagline-text::after {
+      content: '';
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 5px; height: 5px;
+      background: #c8963c;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      opacity: 0.6;
+    }
+    .atlas-tagline-text::before { left: -3px; }
+    .atlas-tagline-text::after  { right: -3px; }
+
+    @keyframes glowPulse {
+      0%,100% { opacity: 0.55; transform: translateX(-50%) scaleX(1); }
+      50%      { opacity: 1;    transform: translateX(-50%) scaleX(1.18); }
+    }
+    @keyframes lpFloat {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      10%  { opacity: 0.9; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-280px) translateX(var(--dx,20px)); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="site-wrapper">
+  <!-- NOTIFICATION -->
+  <div class="notif" id="notif"></div>
+
+  <!-- PAGE HOME -->
+  <div class="page active" id="page-home">
+    <header class="site-header">
+      <a class="header-logo" href="index.html">
+        <svg class="header-logo-svg" viewBox="0 0 36 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="hi-hg" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="#9a6010"/>
+              <stop offset="50%"  stop-color="#f0c040"/>
+              <stop offset="100%" stop-color="#9a6010"/>
+            </linearGradient>
+            <linearGradient id="hi-v" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#fff0a0"/>
+              <stop offset="50%"  stop-color="#d4900a"/>
+              <stop offset="100%" stop-color="#e0aa30"/>
+            </linearGradient>
+            <clipPath id="hi-ct"><path d="M 2 6 Q 0 22 16 26 L 20 26 Q 36 22 34 6 Z"/></clipPath>
+            <clipPath id="hi-cb"><path d="M 16 28 Q 0 32 2 46 L 34 46 Q 36 32 20 28 Z"/></clipPath>
+          </defs>
+          <rect x="1" y="1" width="34" height="6" rx="1.5" fill="url(#hi-hg)"/>
+          <path d="M 2 7 Q 0 23 16 27 L 20 27 Q 36 23 34 7 Z" stroke="url(#hi-v)" stroke-width="1.2" fill="rgba(200,150,40,0.07)"/>
+          <g clip-path="url(#hi-ct)">
+            <path d="M 3 7 L 33 7 Q 35 17 24 24 L 12 24 Q 1 17 3 7 Z" fill="rgba(245,215,100,0.18)"/>
+          </g>
+          <ellipse cx="18" cy="27.5" rx="3" ry="2" fill="url(#hi-hg)" opacity="0.9"/>
+          <path d="M 16 28 Q 0 32 2 46 L 34 46 Q 36 32 20 28 Z" stroke="url(#hi-v)" stroke-width="1.2" fill="rgba(200,150,40,0.05)"/>
+          <g clip-path="url(#hi-cb)">
+            <path d="M 4 46 Q 5 37 18 33 Q 31 37 32 46 Z" fill="rgba(245,180,40,0.22)"/>
+          </g>
+          <line x1="18" y1="29" x2="18" y2="33" stroke="rgba(255,220,80,0.8)" stroke-width="1" stroke-linecap="round">
+            <animate attributeName="opacity" values="0.8;0.1;0.8" dur="1.8s" repeatCount="indefinite"/>
+          </line>
+          <rect x="1" y="45" width="34" height="6" rx="1.5" fill="url(#hi-hg)"/>
+        </svg>
+        <div>
+          <span class="header-logo-text">ATLAS</span>
+          <span class="header-logo-sub">Huis Clos · JdR · Escape Room</span>
+        </div>
+      </a>
+      <nav class="header-nav">
+        <span class="nav-btn" style="cursor:default;">v 2.0</span>
+        <a class="nav-btn primary" href="game.html">Reprendre</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+
+      <!-- ══ LOGO ATLAS ══ -->
+      <div class="atlas-logo-scene">
+
+        <!-- Particules -->
+        <div class="logo-particles" id="logo-particles"></div>
+
+        <!-- Lueur sol -->
+        <div class="logo-ground-glow"></div>
+
+        <!-- Rose des vents -->
+        <svg class="logo-compass" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="250" cy="250" r="245" stroke="#c8963c" stroke-width="1"   opacity="0.5"/>
+          <circle cx="250" cy="250" r="220" stroke="#c8963c" stroke-width="0.5" opacity="0.3"/>
+          <circle cx="250" cy="250" r="180" stroke="#c8963c" stroke-width="0.5" opacity="0.2"/>
+          <circle cx="250" cy="250" r="100" stroke="#c8963c" stroke-width="0.5" opacity="0.2"/>
+          <path d="M 250 10 L 240 250 L 250 230 L 260 250 Z" fill="#c8963c" opacity="0.65"/>
+          <path d="M 250 490 L 240 250 L 250 270 L 260 250 Z" fill="#c8963c" opacity="0.4"/>
+          <path d="M 490 250 L 250 240 L 270 250 L 250 260 Z" fill="#c8963c" opacity="0.4"/>
+          <path d="M 10 250 L 250 240 L 230 250 L 250 260 Z" fill="#c8963c" opacity="0.4"/>
+          <path d="M 423 77 L 252 248 L 248 252 L 77 423"  stroke="#c8963c" stroke-width="0.6" opacity="0.2"/>
+          <path d="M 77 77 L 248 248 L 252 252 L 423 423"  stroke="#c8963c" stroke-width="0.6" opacity="0.2"/>
+          <circle cx="250" cy="250" r="10" stroke="#c8963c" stroke-width="1.5" fill="rgba(200,150,60,0.1)" opacity="0.7"/>
+          <circle cx="250" cy="250" r="4"  fill="#c8963c" opacity="0.6"/>
+          <path d="M 250 68 L 244 80 L 250 76 L 256 80 Z"  fill="#c8963c" opacity="0.5"/>
+        </svg>
+
+        <!-- Mot ATLAS + sablier -->
+        <div class="atlas-letters-row">
+
+          <span class="atlas-letter">A</span>
+          <span class="atlas-letter">T</span>
+
+          <!-- SABLIER -->
+          <div class="atlas-hourglass">
+            <svg width="100%" height="100%" viewBox="0 0 85 125" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+              <defs>
+                <linearGradient id="hm" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#fff0a0"/>
+                  <stop offset="20%"  stop-color="#d4900a"/>
+                  <stop offset="50%"  stop-color="#f0c040"/>
+                  <stop offset="80%"  stop-color="#9a6010"/>
+                  <stop offset="100%" stop-color="#e0aa30"/>
+                </linearGradient>
+                <linearGradient id="hf" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%"   stop-color="#9a6010"/>
+                  <stop offset="30%"  stop-color="#f0c040"/>
+                  <stop offset="50%"  stop-color="#fff0a0"/>
+                  <stop offset="70%"  stop-color="#f0c040"/>
+                  <stop offset="100%" stop-color="#9a6010"/>
+                </linearGradient>
+                <radialGradient id="hg-glow" cx="50%" cy="100%" r="60%">
+                  <stop offset="0%"   stop-color="#ff9900" stop-opacity="0.8"/>
+                  <stop offset="100%" stop-color="#ff9900" stop-opacity="0"/>
+                </radialGradient>
+                <clipPath id="ct-i"><path d="M 6 14 Q 0 52 38 62 L 47 62 Q 85 52 79 14 Z"/></clipPath>
+                <clipPath id="cb-i"><path d="M 38 66 Q 0 76 6 110 L 79 110 Q 85 76 47 66 Z"/></clipPath>
+              </defs>
+              <ellipse cx="42.5" cy="118" rx="40" ry="12" fill="url(#hg-glow)" opacity="0.7">
+                <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.5s" repeatCount="indefinite"/>
+              </ellipse>
+              <rect x="3" y="3" width="79" height="12" rx="3" fill="url(#hf)"/>
+              <rect x="3" y="3" width="79" height="4"  rx="2" fill="rgba(255,255,200,0.22)"/>
+              <circle cx="10" cy="9" r="2.5" fill="rgba(255,240,150,0.5)"/>
+              <circle cx="75" cy="9" r="2.5" fill="rgba(255,240,150,0.5)"/>
+              <path d="M 6 15 Q 0 53 38 63 L 47 63 Q 85 53 79 15 Z" stroke="url(#hm)" stroke-width="2" fill="rgba(200,150,40,0.06)"/>
+              <path d="M 10 18 Q 6 45 18 60" stroke="rgba(255,255,200,0.1)" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <g clip-path="url(#ct-i)">
+                <path d="M 8 15 L 77 15 Q 80 38 58 56 L 27 56 Q 5 38 8 15 Z" fill="rgba(245,215,100,0.2)"/>
+                <ellipse cx="42" cy="40" rx="28" ry="5" fill="rgba(245,215,100,0.15)"/>
+              </g>
+              <line x1="42.5" y1="63" x2="42.5" y2="66" stroke="url(#hm)" stroke-width="4" stroke-linecap="round"/>
+              <ellipse cx="42.5" cy="64.5" rx="5" ry="3.5" fill="url(#hf)" opacity="0.9"/>
+              <path d="M 38 66 Q 0 76 6 111 L 79 111 Q 85 76 47 66 Z" stroke="url(#hm)" stroke-width="2" fill="rgba(200,150,40,0.05)"/>
+              <g clip-path="url(#cb-i)">
+                <path d="M 8 111 Q 10 88 42 78 Q 75 88 77 111 Z" fill="rgba(245,180,40,0.22)"/>
+                <ellipse cx="42" cy="80" rx="22" ry="5" fill="rgba(255,200,60,0.25)">
+                  <animate attributeName="rx" values="22;26;22" dur="2.5s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0.25;0.5;0.25" dur="2.5s" repeatCount="indefinite"/>
+                </ellipse>
+              </g>
+              <line x1="42.5" y1="67" x2="42.5" y2="78" stroke="rgba(255,220,80,0.9)" stroke-width="1.5" stroke-linecap="round">
+                <animate attributeName="opacity" values="0.9;0.1;0.9" dur="1.8s" repeatCount="indefinite"/>
+              </line>
+              <circle cx="42.5" cy="78" r="1.5" fill="rgba(255,220,80,0.7)">
+                <animate attributeName="cy"      values="78;76;78" dur="1.8s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.7;0.2;0.7" dur="1.8s" repeatCount="indefinite"/>
+              </circle>
+              <rect x="3" y="110" width="79" height="12" rx="3" fill="url(#hf)"/>
+              <rect x="3" y="118" width="79" height="4"  rx="2" fill="rgba(0,0,0,0.2)"/>
+              <circle cx="10" cy="116" r="2.5" fill="rgba(255,240,150,0.5)"/>
+              <circle cx="75" cy="116" r="2.5" fill="rgba(255,240,150,0.5)"/>
+            </svg>
+          </div>
+
+          <span class="atlas-letter">L</span>
+          <span class="atlas-letter">A</span>
+          <span class="atlas-letter">S</span>
+        </div>
+
+        <!-- Tagline -->
+        <div class="atlas-tagline-row">
+          <div class="atlas-tagline-line"></div>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
+            <polygon points="8,1 15,8 8,15 1,8" fill="none" stroke="#c8963c" stroke-width="1.2" opacity="0.7"/>
+            <polygon points="8,4 12,8 8,12 4,8" fill="rgba(200,150,60,0.2)" stroke="#c8963c" stroke-width="0.6" opacity="0.5"/>
+          </svg>
+          <span class="atlas-tagline-text">Jeu de Rôle &nbsp;•&nbsp; Escape Room &nbsp;•&nbsp; Huis Clos</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
+            <polygon points="8,1 15,8 8,15 1,8" fill="none" stroke="#c8963c" stroke-width="1.2" opacity="0.7"/>
+            <polygon points="8,4 12,8 8,12 4,8" fill="rgba(200,150,60,0.2)" stroke="#c8963c" stroke-width="0.6" opacity="0.5"/>
+          </svg>
+          <div class="atlas-tagline-line right"></div>
+        </div>
+
+        <!-- Pointe basse -->
+        <svg width="36" height="22" viewBox="0 0 36 22" fill="none" style="margin-top:6px;opacity:0.45;">
+          <line x1="0"  y1="2" x2="15" y2="2" stroke="#c8963c" stroke-width="0.8"/>
+          <line x1="21" y1="2" x2="36" y2="2" stroke="#c8963c" stroke-width="0.8"/>
+          <path d="M 18 2 L 12 10 L 18 20 L 24 10 Z" fill="none" stroke="#c8963c" stroke-width="1"/>
+        </svg>
+
+      </div><!-- /atlas-logo-scene -->
+
+      <p class="hero-desc" style="margin-top:32px;">
+        Générez en un instant un scénario de huis clos jouable immédiatement —
+        sans préparation, sans backend, sans IA.
+      </p>
+
+      <!-- CONFIG -->
+      <div class="config-card">
+        <div class="config-card-corner corner-tl"></div>
+        <div class="config-card-corner corner-tr"></div>
+        <div class="config-card-corner corner-bl"></div>
+        <div class="config-card-corner corner-br"></div>
+
+        <div class="config-grid">
+          <div class="field-group">
+            <span class="field-label">// Joueurs</span>
+            <div class="opt-group">
+              <button class="opt-btn sel" data-val="2" onclick="pickOption('players', this)">2</button>
+              <button class="opt-btn"     data-val="3" onclick="pickOption('players', this)">3</button>
+              <button class="opt-btn"     data-val="4" onclick="pickOption('players', this)">4</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <span class="field-label">// Tonalité</span>
+            <div class="opt-group">
+              <button class="opt-btn sel" data-val="horreur"   onclick="pickOption('tone', this)">Horreur</button>
+              <button class="opt-btn"     data-val="thriller"  onclick="pickOption('tone', this)">Thriller</button>
+              <button class="opt-btn"     data-val="scifi"     onclick="pickOption('tone', this)">Sci-Fi</button>
+              <button class="opt-btn"     data-val="mystique"  onclick="pickOption('tone', this)">Mystique</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <span class="field-label">// Complexité</span>
+            <div class="opt-group">
+              <button class="opt-btn sel" data-val="simple"        onclick="pickOption('complexity', this)">Simple</button>
+              <button class="opt-btn"     data-val="intermediaire" onclick="pickOption('complexity', this)">Intermédiaire</button>
+              <button class="opt-btn"     data-val="complexe"      onclick="pickOption('complexity', this)">Complexe</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <span class="field-label">// Type</span>
+            <div class="opt-group">
+              <button class="opt-btn sel" data-val="evasion" onclick="pickOption('type', this)">Évasion</button>
+              <button class="opt-btn"     data-val="enquete" onclick="pickOption('type', this)">Enquête</button>
+              <button class="opt-btn"     data-val="survie"  onclick="pickOption('type', this)">Survie</button>
+            </div>
+          </div>
+
+          <div class="field-group config-full">
+            <span class="field-label">// Durée de partie</span>
+            <div class="opt-group">
+              <button class="opt-btn"     data-val="30" onclick="pickOption('duration', this)">30 min</button>
+              <button class="opt-btn sel" data-val="60" onclick="pickOption('duration', this)">60 min</button>
+              <button class="opt-btn"     data-val="90" onclick="pickOption('duration', this)">90 min</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-separator"></div>
+
+        <button class="btn btn-gold btn-lg" style="width:100%;" onclick="doGenerate()">
+          ▶ &nbsp; GÉNÉRER LE HUIS CLOS
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/engine.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  function pickOption(group, btn) {
+    const parent = btn.closest('.opt-group');
+    if (parent) parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+    ATLAS.config[group] = btn.dataset.val;
+  }
+
+  async function doGenerate() {
+    if (!ATLAS.data) { await loadData(); }
+    const sc = generateScenario();
+    if (!sc) return;
+    saveSession();
+    window.location.href = 'game.html';
+  }
+
+  // Init unique
+  window.addEventListener('DOMContentLoaded', async () => {
+    await loadData();
+    // Particules logo
+    const c = document.getElementById('logo-particles');
+    if (!c) return;
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'lp';
+      p.style.cssText = `
+        left:${Math.random()*100}%;
+        bottom:${Math.random()*35}%;
+        width:${Math.random()*2+1}px;
+        height:${Math.random()*2+1}px;
+        --dx:${(Math.random()-.5)*50}px;
+        animation-duration:${Math.random()*5+4}s;
+        animation-delay:${Math.random()*6}s;
+        background:hsl(${38+Math.random()*18},90%,62%);
+      `;
+      c.appendChild(p);
+    }
+  });
+</script>
+</body>
+</html>

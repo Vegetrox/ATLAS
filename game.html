@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATLAS — Partie en cours</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/game.css">
+  <style>
+    body { display: flex; flex-direction: column; }
+    .site-wrapper { display: flex; flex-direction: column; flex: 1; }
+    .game-wrap { display: flex; flex-direction: column; flex: 1; }
+  </style>
+</head>
+<body>
+<div class="site-wrapper">
+
+  <!-- OUTCOME OVERLAY -->
+  <div class="outcome-overlay" id="outcome-overlay">
+    <svg width="80" height="80" viewBox="0 0 140 140" fill="none" style="margin-bottom:24px;opacity:0.4;">
+      <polygon points="70,10 125,110 15,110" fill="none" stroke="#c8963c" stroke-width="1.5"/>
+      <circle cx="70" cy="72" r="7" fill="#c8963c" opacity="0.8"/>
+    </svg>
+    <div class="outcome-title win" id="outcome-title">VICTOIRE</div>
+    <p class="outcome-story" id="outcome-story"></p>
+    <button class="btn btn-outline" onclick="goHome()" style="font-size:12px;letter-spacing:4px;">↩ &nbsp; NOUVELLE PARTIE</button>
+  </div>
+
+  <!-- NOTIFICATION -->
+  <div class="notif" id="notif"></div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <a class="header-logo" href="index.html">
+      <!-- Mini sablier header -->
+      <svg class="header-logo-svg" viewBox="0 0 36 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hdr-hg" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#9a6010"/>
+            <stop offset="50%"  stop-color="#f0c040"/>
+            <stop offset="100%" stop-color="#9a6010"/>
+          </linearGradient>
+          <linearGradient id="hdr-v" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#fff0a0"/>
+            <stop offset="50%"  stop-color="#d4900a"/>
+            <stop offset="100%" stop-color="#e0aa30"/>
+          </linearGradient>
+          <clipPath id="hdr-ct"><path d="M 2 6 Q 0 22 16 26 L 20 26 Q 36 22 34 6 Z"/></clipPath>
+          <clipPath id="hdr-cb"><path d="M 16 28 Q 0 32 2 46 L 34 46 Q 36 32 20 28 Z"/></clipPath>
+        </defs>
+        <rect x="1" y="1"  width="34" height="6" rx="1.5" fill="url(#hdr-hg)"/>
+        <path d="M 2 7 Q 0 23 16 27 L 20 27 Q 36 23 34 7 Z" stroke="url(#hdr-v)" stroke-width="1.2" fill="rgba(200,150,40,0.07)"/>
+        <g clip-path="url(#hdr-ct)">
+          <path d="M 3 7 L 33 7 Q 35 17 24 24 L 12 24 Q 1 17 3 7 Z" fill="rgba(245,215,100,0.18)"/>
+        </g>
+        <ellipse cx="18" cy="27.5" rx="3" ry="2" fill="url(#hdr-hg)" opacity="0.9"/>
+        <path d="M 16 28 Q 0 32 2 46 L 34 46 Q 36 32 20 28 Z" stroke="url(#hdr-v)" stroke-width="1.2" fill="rgba(200,150,40,0.05)"/>
+        <g clip-path="url(#hdr-cb)">
+          <path d="M 4 46 Q 5 37 18 33 Q 31 37 32 46 Z" fill="rgba(245,180,40,0.22)"/>
+        </g>
+        <line x1="18" y1="29" x2="18" y2="33" stroke="rgba(255,220,80,0.8)" stroke-width="1" stroke-linecap="round">
+          <animate attributeName="opacity" values="0.8;0.1;0.8" dur="1.8s" repeatCount="indefinite"/>
+        </line>
+        <rect x="1" y="45" width="34" height="6" rx="1.5" fill="url(#hdr-hg)"/>
+        <ellipse cx="18" cy="48" rx="18" ry="6" fill="rgba(255,140,0,0.18)" filter="url(#hg-glow)">
+          <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2.5s" repeatCount="indefinite"/>
+        </ellipse>
+      </svg>
+      <div>
+        <span class="header-logo-text">ATLAS</span>
+        <span class="header-logo-sub" id="hdr-scenario-name">—</span>
+      </div>
+    </a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="nav-btn" id="hdr-act" style="cursor:default;color:var(--gold);border:1px solid var(--border2);">ACTE 1</span>
+      <button class="nav-btn" onclick="goHome()">↩ Accueil</button>
+    </div>
+  </header>
+
+  <!-- TABS -->
+  <div class="tabs-bar">
+    <button class="tab-btn active" data-tab="scenario"   onclick="switchTab('scenario')">Scénario</button>
+    <button class="tab-btn"        data-tab="players"    onclick="switchTab('players')">Personnages</button>
+    <button class="tab-btn"        data-tab="objects"    onclick="switchTab('objects')">Objets</button>
+    <button class="tab-btn"        data-tab="resolution" onclick="switchTab('resolution')">Résolution</button>
+    <button class="tab-btn"        data-tab="mj"         onclick="switchTab('mj')">MJ</button>
+  </div>
+
+  <div class="game-wrap">
+
+    <!-- ═══════════ SCENARIO TAB ═══════════ -->
+    <div class="tab-content active" id="tab-scenario">
+      <div class="game-layout">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+
+          <!-- Timer -->
+          <div class="panel">
+            <div class="panel-head">
+              <span class="panel-title">// Chrono</span>
+            </div>
+            <div class="timer-face" id="timer-face">60:00</div>
+            <div class="timer-rail">
+              <div class="timer-fill" id="timer-fill" style="width:100%"></div>
+            </div>
+            <div class="timer-row">
+              <button class="timer-btn" id="btn-timer-toggle" onclick="toggleTimer()">▶ Start</button>
+              <button class="timer-btn" onclick="doResetTimer()">↺ Reset</button>
+            </div>
+          </div>
+
+          <!-- Actes -->
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">// Progression</span></div>
+            <div class="panel-body">
+              <div class="act-pips">
+                <div class="act-pip current"></div>
+                <div class="act-pip"></div>
+                <div class="act-pip"></div>
+                <div class="act-pip"></div>
+                <div class="act-pip"></div>
+              </div>
+              <div class="act-labels">
+                <div class="act-label current">Intro</div>
+                <div class="act-label">Tension</div>
+                <div class="act-label">Crise</div>
+                <div class="act-label">Climax</div>
+                <div class="act-label">Fin</div>
+              </div>
+              <div class="act-nav">
+                <button class="timer-btn" onclick="prevAct()" style="flex:0;padding:6px 14px;">◀</button>
+                <span class="act-nav-name" id="act-name-display">INTRODUCTION</span>
+                <button class="timer-btn" onclick="nextAct()" style="flex:0;padding:6px 14px;">▶</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tension -->
+          <div class="panel">
+            <div class="panel-head"><span class="panel-title">// Tension</span></div>
+            <div class="panel-body">
+              <div class="tension-blocks">
+                <div class="tension-block"></div>
+                <div class="tension-block"></div>
+                <div class="tension-block"></div>
+                <div class="tension-block"></div>
+                <div class="tension-block"></div>
+              </div>
+              <div class="tension-footer">
+                <span class="tension-label" id="tension-label">CALME</span>
+                <div class="tension-btns">
+                  <button class="tension-btn" onclick="changeTension(-1)">−</button>
+                  <button class="tension-btn" onclick="changeTension(1)">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+          <div class="scenario-title" id="sc-title">—</div>
+          <div class="scenario-meta">
+            <span class="meta-tag meta-gold" id="sc-lieu-tag">Lieu</span>
+            <span class="meta-tag meta-red"  id="sc-pb-tag">Problème</span>
+          </div>
+          <div class="narrative-box" id="sc-narrative">—</div>
+
+          <div class="section-heading">Événements</div>
+          <div class="event-list" id="event-list"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════════ PLAYERS TAB ═══════════ -->
+    <div class="tab-content" id="tab-players">
+      <div class="main-content" style="max-width:1100px;">
+        <div class="section-heading" style="margin-bottom:24px;">Personnages de la partie</div>
+        <div class="players-grid" id="players-grid"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════ OBJECTS TAB ═══════════ -->
+    <div class="tab-content" id="tab-objects">
+      <div class="main-content" style="max-width:1000px;">
+        <div class="section-heading" style="margin-bottom:24px;">Inventaire</div>
+        <div class="objects-grid" id="objects-grid"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════ RESOLUTION TAB ═══════════ -->
+    <div class="tab-content" id="tab-resolution">
+      <div class="resolution-center">
+        <div class="res-player-badge" id="res-player-badge">—</div>
+        <p class="res-prompt" id="res-prompt">Chargement…</p>
+
+        <div class="matrix-wrap">
+          <svg class="matrix-svg" id="matrix-svg" viewBox="0 0 240 240" fill="none">
+            <!-- Zone échec (extérieur) -->
+            <circle cx="120" cy="120" r="116" fill="rgba(139,26,26,0.06)" stroke="rgba(192,57,43,0.2)" stroke-width="1"/>
+            <!-- Zone partielle -->
+            <circle cx="120" cy="120" r="82"  fill="rgba(200,150,60,0.04)" stroke="rgba(200,150,60,0.18)" stroke-width="1"/>
+            <!-- Zone succès -->
+            <circle cx="120" cy="120" r="50"  fill="rgba(200,150,60,0.07)" stroke="rgba(200,150,60,0.3)"  stroke-width="1.2"/>
+            <!-- Zone critique -->
+            <circle cx="120" cy="120" r="22"  fill="rgba(74,192,160,0.12)" stroke="rgba(74,192,160,0.5)"  stroke-width="1.5"/>
+            <!-- Crosshairs -->
+            <line x1="120" y1="4"   x2="120" y2="236" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <line x1="4"   y1="120" x2="236" y2="120" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <!-- Zone labels -->
+            <text x="120" y="18"  text-anchor="middle" fill="rgba(192,57,43,0.5)"  font-family="Cinzel,serif" font-size="8" letter-spacing="3">ÉCHEC</text>
+            <text x="120" y="76"  text-anchor="middle" fill="rgba(200,150,60,0.5)" font-family="Cinzel,serif" font-size="8" letter-spacing="2">PARTIEL</text>
+            <text x="120" y="125" text-anchor="middle" fill="rgba(200,150,60,0.8)" font-family="Cinzel,serif" font-size="8" letter-spacing="2">SUCCÈS</text>
+            <text x="120" y="116" text-anchor="middle" fill="rgba(74,192,160,0.9)" font-family="Cinzel,serif" font-size="7" letter-spacing="1">CRITIQUE</text>
+          </svg>
+          <div class="matrix-dot" id="matrix-dot"></div>
+        </div>
+
+        <div class="matrix-result" id="matrix-result" style="color:var(--text-faint);">— CLIQUEZ —</div>
+        <div class="matrix-desc"   id="matrix-desc">Centre = succès critique · Extérieur = échec</div>
+
+        <div style="margin-top:28px;display:flex;gap:12px;">
+          <button class="btn btn-outline" onclick="nextResolutionPlayer()">Joueur suivant ▸</button>
+          <button class="btn btn-danger"  onclick="triggerDefeat()">Déclarer défaite</button>
+          <button class="btn btn-outline" style="color:var(--teal-light);border-color:rgba(74,192,160,0.3);" onclick="triggerVictory()">Déclarer victoire</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ MJ TAB ═══════════ -->
+    <div class="tab-content" id="tab-mj">
+      <div class="main-content" style="max-width:960px;">
+        <div class="section-heading" style="margin-bottom:24px;">Ressources Maître du Jeu</div>
+        <div class="mj-grid">
+          <div>
+            <div id="mj-acts"></div>
+            <div class="mj-section">
+              <div class="mj-title">// Conditions de Victoire</div>
+              <ul class="mj-list" id="mj-victory"></ul>
+            </div>
+            <div class="mj-section">
+              <div class="mj-title">// Échec Critique</div>
+              <div class="mj-text" id="mj-fail"></div>
+            </div>
+          </div>
+          <div>
+            <div class="mj-section">
+              <div class="mj-title">// Secrets à Révéler</div>
+              <ul class="mj-list" id="mj-secrets"></ul>
+            </div>
+            <div class="mj-section">
+              <div class="mj-title">// Escalade Automatique</div>
+              <ul class="mj-list" id="mj-escalade"></ul>
+            </div>
+            <div class="mj-section">
+              <div class="mj-title">// Fin Alternative</div>
+              <div class="mj-text" id="mj-alt-end"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hint-zone">
+          <div class="mj-title">// Système d'Indices</div>
+          <div class="hint-btns">
+            <button class="btn btn-outline btn-sm" onclick="giveHint('light')">Indice Léger</button>
+            <button class="btn btn-outline btn-sm" onclick="giveHint('strong')">Indice Fort</button>
+            <button class="btn btn-danger btn-sm"  onclick="giveHint('critical')">Indice Critique</button>
+          </div>
+          <div class="hint-display" id="hint-display"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /game-wrap -->
+</div><!-- /site-wrapper -->
+
+<script src="js/engine.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', async () => {
+    await loadData();
+    const ok = loadSession();
+    if (!ok || !ATLAS.scenario) {
+      // Pas de session = retour accueil
+      window.location.href = 'index.html';
+      return;
+    }
+    buildGameUI();
+  });
+
+  function goHome() {
+    pauseTimer();
+    document.getElementById('outcome-overlay').classList.remove('show');
+    window.location.href = 'index.html';
+  }
+</script>
+</body>
+</html>
